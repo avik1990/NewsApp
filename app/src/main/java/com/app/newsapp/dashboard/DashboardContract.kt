@@ -10,7 +10,7 @@ interface DashboardContract {
     interface View : BaseView<Presenter> {
         fun getContext(): AppCompatActivity ///to get activity context from presenter
         fun handleProgressAlert(showingStatus: Boolean) // true --> show, false --> dismiss
-        fun newsFetched(list:List<NewsResponse.Article>)
+        fun newsFetched(list:MutableList<NewsResponse.Article>)
 
     }
 

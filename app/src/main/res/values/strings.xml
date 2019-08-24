@@ -3,4 +3,8 @@
 
     <string name="networkUnavailable">Please check your internet connection.</string>
     <string name="someErrorOccurred">Something went wrong</string>
+
+    <string name="robotoSlab_bold">font/RobotoSlab_Bold.ttf</string>
+    <string name="robotoSlab_regular">font/RobotoSlab_Regular.ttf</string>
+
 </resources>

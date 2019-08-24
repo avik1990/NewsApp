@@ -62,4 +62,10 @@ dependencies {
     //Retrofit interceptor
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
+    //Cardview
+    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+
+    //picaso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }

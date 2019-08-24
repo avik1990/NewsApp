@@ -13,7 +13,7 @@ class NewsResponse {
     private var totalResults: Int? = null
     @SerializedName("articles")
     @Expose
-    private var articles: List<Article>? = null
+    private var articles: MutableList<Article>? = null
 
     fun getStatus(): String? {
         return status
@@ -31,11 +31,11 @@ class NewsResponse {
         this.totalResults = totalResults
     }
 
-    fun getArticles(): List<Article>? {
+    fun getArticles(): MutableList<Article>? {
         return articles
     }
 
-    fun setArticles(articles: List<Article>) {
+    fun setArticles(articles: MutableList<Article>) {
         this.articles = articles
     }
 
