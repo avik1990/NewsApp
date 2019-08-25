@@ -1,6 +1,7 @@
 package com.app.newsapp.dashboard
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -8,10 +9,13 @@ import com.app.newsapp.R
 import com.app.newsapp.dashboard.adapter.NewsAdapter
 import com.app.newsapp.dashboard.model.NewsResponse
 import com.app.newsapp.dashboard.servicecall.DashboardProvider
+import com.app.newsapp.details.DetailsActivity
 import com.app.newsapp.utils.isConnectedToNetwork
 import com.app.newsapp.utils.showSnackbar
 import com.app.others.BaseActivity
+import com.app.others.Constants
 import com.app.others.LoaderDialog
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 
 class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.onRowItemSelected {
@@ -19,6 +23,8 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
     lateinit var dashboardPresenter: DashboardPresenter
     lateinit var context: Context
     lateinit var newsAdapter: NewsAdapter
+    lateinit var listNews: MutableList<NewsResponse.Article>
+    lateinit var jsonbject: String
 
     private val loader by lazy {
         LoaderDialog(this)
@@ -39,9 +45,6 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
         } else {
             loader.hide()
         }
-    }
-
-    override fun goToNextPage() {
     }
 
     override fun isActivityRunning(): Boolean {
@@ -78,6 +81,7 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
     }
 
     override fun newsFetched(list: MutableList<NewsResponse.Article>) {
+        listNews = list
         newsAdapter = NewsAdapter(context!!, list, this)
         val mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rcy_news.layoutManager = mLayoutManager
@@ -86,6 +90,16 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
     }
 
     override fun getPosition(pos: Int) {
+        val gson = Gson()
+        gson.toJson(listNews[pos])
+        jsonbject = gson.toJson(listNews[pos])
+        goToNextPage()
+    }
+
+    override fun goToNextPage() {
+        val intent = Intent(context, DetailsActivity::class.java)
+        intent.putExtra(Constants.Keys._jsonString, jsonbject)
+        startActivity(intent)
     }
 
 }

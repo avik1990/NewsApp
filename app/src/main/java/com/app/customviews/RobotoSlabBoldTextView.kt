@@ -16,7 +16,7 @@ class RobotoSlabBoldTextView : AppCompatTextView {
             else
                 setTypeface(typeface)
         } catch (exception: Exception) {
-            Log.e("robotoSlab_regular", exception.toString())
+            Log.e("robotoSlab_bold", exception.toString())
         }
     }
 

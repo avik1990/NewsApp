@@ -10,4 +10,5 @@
     <color name="text_source">#bababa</color>
     <color name="back_color">#444444</color>
     <color name="black">#000000</color>
+    <color name="date_color">#49494a</color>
 </resources>

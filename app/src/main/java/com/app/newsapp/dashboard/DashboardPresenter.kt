@@ -46,7 +46,7 @@ class DashboardPresenter(
             .subscribe({
                 view.handleProgressAlert(false)
                 if (it.getStatus()!! == "ok") {
-                    showToast(context, "" + it.getArticles()!!.size)
+                    //showToast(context, "" + it.getArticles()!!.size)
                     view.newsFetched(it.getArticles()!!)
                 }
 

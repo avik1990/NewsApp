@@ -3,6 +3,10 @@ package com.app.others
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.WindowManager
+import android.os.Build
+
+
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -10,10 +14,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /* To change the status bar text color */
-       /* if (android.os.Build.VERSION.SDK_INT >= 21) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }*/
         setContentView(getLayout())
         initResources()
         initListeners()

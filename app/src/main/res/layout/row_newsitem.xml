@@ -49,7 +49,7 @@
                               android:layout_marginBottom="@dimen/_12sdp"
                               android:layout_height="wrap_content">
 
-                    <com.app.customviews.RobotoSlabRegularTextView
+                    <com.app.customviews.RobotoSlabBoldTextView
                             android:id="@+id/tv_source"
                             android:layout_width="wrap_content"
                             android:textSize="12sp"
@@ -60,7 +60,8 @@
                             android:id="@+id/tv_date"
                             android:layout_width="wrap_content"
                             android:textSize="12sp"
-                            android:textColor="@color/text_source"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:textColor="@color/date_color"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
             </LinearLayout>

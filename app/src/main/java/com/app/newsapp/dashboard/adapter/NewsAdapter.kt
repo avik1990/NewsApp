@@ -1,6 +1,7 @@
 package com.app.newsapp.dashboard.adapter
 
 import android.content.Context
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +14,15 @@ import com.app.customviews.RobotoSlabBoldTextView
 import com.app.customviews.RobotoSlabRegularTextView
 import com.app.newsapp.R
 import com.app.newsapp.dashboard.model.NewsResponse
+import com.app.newsapp.utils.getFormattedDate
+import com.app.newsapp.utils.showToast
 import com.squareup.picasso.Picasso
 
 class NewsAdapter(
     private val context: Context,
     private val newsList: MutableList<NewsResponse.Article>,
     private val onNewsSelected: onRowItemSelected
-) : RecyclerView.Adapter<NewsAdapter.MyViewHolder>()  {
+) : RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
 
 
     lateinit var rowView: View
@@ -37,7 +40,7 @@ class NewsAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        if(!newsList[position].urlToImage.isNullOrBlank()) {
+        if (!newsList[position].urlToImage.isNullOrBlank()) {
             Picasso.get()
                 .load(newsList[position].urlToImage)
                 .resize(1024, 628)
@@ -47,7 +50,13 @@ class NewsAdapter(
 
         holder.tvSource.text = newsList[position].source!!.name
         holder.tvHeader.text = newsList[position].title
-        holder.tv_date.text = newsList[position].publishedAt
+        holder.tv_date.text = getFormattedDate(newsList[position].publishedAt!!)
+
+        holder.card_view.setOnClickListener {
+            onNewsSelected.getPosition(position)
+
+        }
+
     }
 
     override fun getItemId(position: Int): Long {
@@ -61,15 +70,17 @@ class NewsAdapter(
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var tvHeader: RobotoSlabRegularTextView
-        var imgvwBankIcon:ImageView
-        var tvSource:RobotoSlabRegularTextView
-        var tv_date:TextView
+        var imgvwBankIcon: ImageView
+        var tvSource: RobotoSlabBoldTextView
+        var tv_date: TextView
+        var card_view: CardView
 
         init {
             tvHeader = itemView.findViewById(R.id.tv_header)
             imgvwBankIcon = itemView.findViewById(R.id.iv_img)
             tvSource = itemView.findViewById(R.id.tv_source)
             tv_date = itemView.findViewById(R.id.tv_date)
+            card_view = itemView.findViewById(R.id.card_view)
         }
 
     }

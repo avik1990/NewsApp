@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/llDashParent"
+              android:fitsSystemWindows="false"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:background="@color/back_color"
+              android:layout_height="match_parent"
+              tools:context=".dashboard.DashboardActivity">
+
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <FrameLayout android:layout_width="match_parent"
+                     android:layout_height="match_parent">
+
+            <ImageView
+                    android:id="@+id/iv_background"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/ic_demo_image"
+                    android:scaleType="centerCrop"
+                    android:layout_height="match_parent"/>
+
+            <RelativeLayout android:layout_width="@dimen/_42sdp"
+                            android:layout_marginTop="@dimen/_42sdp"
+                            android:background="@drawable/circular_back"
+                            android:layout_marginLeft="@dimen/_16sdp"
+                            android:layout_height="@dimen/_42sdp">
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_back"
+                        android:layout_centerInParent="true"
+                        android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+
+        <RelativeLayout
+                android:id="@+id/rl_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/gradient">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:gravity="bottom"
+                    android:layout_marginLeft="@dimen/_24sdp"
+                    android:layout_marginRight="@dimen/_24sdp"
+                    android:layout_height="wrap_content">
+
+                <com.app.customviews.RobotoSlabBoldTextView
+                        android:id="@+id/news_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_64sdp"
+                        android:textSize="29sp"
+                        android:text="dsfsdfsdfsdfsfsfsf"
+                        android:textColor="@color/text_header"/>
+
+                <RelativeLayout
+                        android:id="@+id/ll_source"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/news_title"
+                        android:layout_marginBottom="@dimen/_16sdp"
+                        android:layout_height="wrap_content">
+
+                    <com.app.customviews.RobotoSlabRegularTextView
+                            android:id="@+id/tv_source"
+                            android:layout_width="wrap_content"
+                            android:text="dsfsdfsdfsdfsfsfsf"
+                            android:textSize="20sp"
+                            android:layout_alignParentLeft="true"
+                            android:textColor="@color/text_header"
+                            android:layout_height="wrap_content"/>
+
+                    <com.app.customviews.RobotoSlabRegularTextView
+                            android:id="@+id/tv_date"
+                            android:layout_width="wrap_content"
+                            android:textSize="20sp"
+                            android:layout_alignParentRight="true"
+                            android:text="dsfsdfsdfsdfsfsfsf"
+                            android:textColor="@color/text_header"
+                            android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <com.app.customviews.RobotoSlabRegularTextView
+                        android:id="@+id/news_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ll_source"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:text=""
+                        android:textColor="@color/text_source"
+                        android:textSize="14sp"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </FrameLayout>
+</LinearLayout>
