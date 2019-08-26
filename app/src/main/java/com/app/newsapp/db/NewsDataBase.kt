@@ -3,6 +3,7 @@ package com.app.newsapp.db
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.Room
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import com.app.newsapp.dashboard.model.Article
 
@@ -11,6 +12,7 @@ import com.app.newsapp.dashboard.model.Article
  */
 
 @Database(entities = arrayOf(Article::class), version = 1)
+@TypeConverters(Article.SourceTypeConverter::class)
 abstract class NewsDataBase : RoomDatabase() {
 
     abstract fun weatherDataDao(): NewsDataDao

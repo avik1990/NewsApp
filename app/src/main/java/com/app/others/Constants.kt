@@ -29,7 +29,10 @@ object Constants {
             .addInterceptor(loggingInterceptor)
             .build()
     }
-    object Keys{
+
+    object Keys {
         val _jsonString = "jsonString"
+        val _isOffline = ""
+
     }
 }

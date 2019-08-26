@@ -108,6 +108,7 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
     override fun goToNextPage() {
         val intent = Intent(context, DetailsActivity::class.java)
         intent.putExtra(Constants.Keys._jsonString, jsonbject)
+        intent.putExtra(Constants.Keys._isOffline, flag)//flag =1 online flag=2 offline
         startActivity(intent)
     }
 

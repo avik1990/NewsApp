@@ -1,15 +1,12 @@
 package com.app.newsapp.dashboard.model
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Ignore
-import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 @Entity(tableName = "tbl_newsData")
 data class Article(
     @PrimaryKey(autoGenerate = true) var _id: Long?,
-    @ColumnInfo(name = "src_id") var src_id: String?,
-    @ColumnInfo(name = "name") var name: String?,
     @ColumnInfo(name = "author") var author: String?,
     @ColumnInfo(name = "title") var title: String?,
     @ColumnInfo(name = "description") var description: String?,
@@ -17,8 +14,37 @@ data class Article(
     @ColumnInfo(name = "urlToImage") var urlToImage: String?,
     @ColumnInfo(name = "publishedAt") var publishedAt: String?,
     @ColumnInfo(name = "content") var content: String?,
-    @Ignore var source: Source?
+    @TypeConverters(SourceTypeConverter::class)
+    @ColumnInfo(name = "source")
+    var source: Source?
 ){
-    constructor() : this(null,"", "", "", "", "",
+    class SourceTypeConverter {
+        @TypeConverter
+        fun fromDeliveryExchangeList(source: Source?): String? {
+            if (source == null) {
+                return null
+            }
+            val gson = Gson()
+            val type = object : TypeToken<Source>() {
+
+            }.type
+            return gson.toJson(source, type)
+        }
+
+        @TypeConverter
+        fun toDeliveryExchangeList(source: String?): Source? {
+            if (source == null) {
+                return null
+            }
+            val gson = Gson()
+            val type = object : TypeToken<Source>() {
+
+            }.type
+            return gson.fromJson(source, type)
+        }
+    }
+
+    constructor() : this(null,"", "", "",
         "", "", "", "",null)
 }
+

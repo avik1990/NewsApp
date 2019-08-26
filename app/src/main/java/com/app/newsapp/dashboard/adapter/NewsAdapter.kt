@@ -47,11 +47,8 @@ class NewsAdapter(
                 .into(holder.imgvwBankIcon)
         }
 
-        if (from == "2") {
-            holder.tvSource.text = newsList[position].name
-        } else {
-            holder.tvSource.text = newsList[position].source!!.name
-        }
+        holder.tvSource.text = newsList[position].source!!.name
+
         holder.tvHeader.text = newsList[position].title
         holder.tv_date.text = getFormattedDate(newsList[position].publishedAt!!)
 

@@ -17,6 +17,7 @@ class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract {
 
     lateinit var context: Context
     lateinit var _jsonString: String
+    lateinit var _isOffline: String
 
     private val loader by lazy {
         LoaderDialog(this)
@@ -39,6 +40,7 @@ class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract {
     override fun initResources() {
         context = this
         _jsonString = intent.getStringExtra(Constants.Keys._jsonString)
+        _isOffline = intent.getStringExtra(Constants.Keys._isOffline)//flag =1 online flag=2 offline
         newsDetailsFetched()
     }
 
@@ -56,7 +58,6 @@ class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract {
     override fun newsDetailsFetched() {
         val newsresponse = GsonBuilder().create().fromJson(_jsonString, Article::class.java)
         news_title.text = newsresponse.title
-       // dasdasda
         tv_source.text = newsresponse.source!!.name
 
         tv_date.text = getFormattedDate(newsresponse.publishedAt!!)
@@ -68,7 +69,5 @@ class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract {
                 .onlyScaleDown()
                 .into(iv_background)
         }
-
-        iv_background
     }
 }
