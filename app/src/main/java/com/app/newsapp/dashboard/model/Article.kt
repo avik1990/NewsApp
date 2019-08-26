@@ -20,7 +20,7 @@ data class Article(
 ){
     class SourceTypeConverter {
         @TypeConverter
-        fun fromDeliveryExchangeList(source: Source?): String? {
+        fun fromSourceList(source: Source?): String? {
             if (source == null) {
                 return null
             }
@@ -32,7 +32,7 @@ data class Article(
         }
 
         @TypeConverter
-        fun toDeliveryExchangeList(source: String?): Source? {
+        fun toSourceList(source: String?): Source? {
             if (source == null) {
                 return null
             }

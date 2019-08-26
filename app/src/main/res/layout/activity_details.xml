@@ -21,15 +21,16 @@
             <ImageView
                     android:id="@+id/iv_background"
                     android:layout_width="match_parent"
-                    android:src="@drawable/ic_demo_image"
                     android:scaleType="centerCrop"
                     android:layout_height="match_parent"/>
 
-            <RelativeLayout android:layout_width="@dimen/_42sdp"
-                            android:layout_marginTop="@dimen/_42sdp"
-                            android:background="@drawable/circular_back"
-                            android:layout_marginLeft="@dimen/_16sdp"
-                            android:layout_height="@dimen/_42sdp">
+            <RelativeLayout
+                    android:id="@+id/rl_back"
+                    android:layout_width="@dimen/_42sdp"
+                    android:layout_marginTop="@dimen/_42sdp"
+                    android:background="@drawable/circular_back"
+                    android:layout_marginLeft="@dimen/_16sdp"
+                    android:layout_height="@dimen/_42sdp">
                 <ImageView
                         android:layout_width="wrap_content"
                         android:src="@drawable/ic_back"
@@ -86,7 +87,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="20sp"
                             android:layout_alignParentRight="true"
-                            android:text="dsfsdfsdfsdfsfsfsf"
+                            android:text="666"
                             android:textColor="@color/text_header"
                             android:layout_height="wrap_content"/>
                 </RelativeLayout>

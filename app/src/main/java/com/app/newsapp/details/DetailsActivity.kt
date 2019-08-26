@@ -2,6 +2,7 @@ package com.app.newsapp.details
 
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.WindowManager
 import com.app.newsapp.R
 import com.app.newsapp.dashboard.model.Article
@@ -13,7 +14,13 @@ import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
 
-class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract {
+class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract, View.OnClickListener {
+
+    override fun onClick(v: View?) {
+        if (v == rl_back) {
+            finish()
+        }
+    }
 
     lateinit var context: Context
     lateinit var _jsonString: String
@@ -45,6 +52,7 @@ class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract {
     }
 
     override fun initListeners() {
+        rl_back.setOnClickListener(this)
     }
 
     override fun getLayout(): Int {
