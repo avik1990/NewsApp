@@ -6,24 +6,23 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.app.customviews.RobotoSlabBoldTextView
 import com.app.customviews.RobotoSlabRegularTextView
 import com.app.newsapp.R
+import com.app.newsapp.dashboard.model.Article
 import com.app.newsapp.dashboard.model.NewsResponse
 import com.app.newsapp.utils.getFormattedDate
-import com.app.newsapp.utils.showToast
 import com.squareup.picasso.Picasso
 
 class NewsAdapter(
     private val context: Context,
-    private val newsList: MutableList<NewsResponse.Article>,
-    private val onNewsSelected: onRowItemSelected
-) : RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
+    private val newsList: List<Article>,
+    private val onNewsSelected: onRowItemSelected,
+    private val from: String
 
+) : RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
 
     lateinit var rowView: View
 
@@ -48,13 +47,16 @@ class NewsAdapter(
                 .into(holder.imgvwBankIcon)
         }
 
-        holder.tvSource.text = newsList[position].source!!.name
+        if (from == "2") {
+            holder.tvSource.text = newsList[position].name
+        } else {
+            holder.tvSource.text = newsList[position].source!!.name
+        }
         holder.tvHeader.text = newsList[position].title
         holder.tv_date.text = getFormattedDate(newsList[position].publishedAt!!)
 
         holder.card_view.setOnClickListener {
             onNewsSelected.getPosition(position)
-
         }
 
     }
@@ -68,7 +70,6 @@ class NewsAdapter(
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         var tvHeader: RobotoSlabRegularTextView
         var imgvwBankIcon: ImageView
         var tvSource: RobotoSlabBoldTextView

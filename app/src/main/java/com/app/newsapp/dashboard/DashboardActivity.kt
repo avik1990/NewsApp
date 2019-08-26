@@ -7,8 +7,9 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import com.app.newsapp.R
 import com.app.newsapp.dashboard.adapter.NewsAdapter
-import com.app.newsapp.dashboard.model.NewsResponse
+import com.app.newsapp.dashboard.model.Article
 import com.app.newsapp.dashboard.servicecall.DashboardProvider
+import com.app.newsapp.db.NewsDataBase
 import com.app.newsapp.details.DetailsActivity
 import com.app.newsapp.utils.isConnectedToNetwork
 import com.app.newsapp.utils.showSnackbar
@@ -23,8 +24,10 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
     lateinit var dashboardPresenter: DashboardPresenter
     lateinit var context: Context
     lateinit var newsAdapter: NewsAdapter
-    lateinit var listNews: MutableList<NewsResponse.Article>
+    lateinit var listNews: List<Article>
     lateinit var jsonbject: String
+    private var mDb: NewsDataBase? = null
+    lateinit var flag: String
 
     private val loader by lazy {
         LoaderDialog(this)
@@ -69,7 +72,8 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
 
     override fun initResources() {
         context = this
-        DashboardPresenter(context, this, DashboardProvider.getNewsRepository()).start()
+        mDb = NewsDataBase.getInstance(context)
+        DashboardPresenter(context, this, DashboardProvider.getNewsRepository(), mDb!!).start()
     }
 
     override fun initListeners() {
@@ -80,9 +84,14 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
         return R.layout.activity_main
     }
 
-    override fun newsFetched(list: MutableList<NewsResponse.Article>) {
+    override fun newsFetched(list: List<Article>) {
         listNews = list
-        newsAdapter = NewsAdapter(context!!, list, this)
+        flag = "1"
+        inflateAdapter(listNews)
+    }
+
+    private fun inflateAdapter(listNews: List<Article>) {
+        newsAdapter = NewsAdapter(context, listNews, this, flag) //flag =1 online flag=2 offline
         val mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rcy_news.layoutManager = mLayoutManager
         rcy_news.itemAnimator = DefaultItemAnimator()
@@ -100,6 +109,12 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
         val intent = Intent(context, DetailsActivity::class.java)
         intent.putExtra(Constants.Keys._jsonString, jsonbject)
         startActivity(intent)
+    }
+
+    override fun newsFetchedDB(list: List<Article>) {
+        listNews = list
+        flag = "2"
+        inflateAdapter(listNews)
     }
 
 }

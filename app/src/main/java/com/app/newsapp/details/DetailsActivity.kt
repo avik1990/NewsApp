@@ -4,7 +4,7 @@ import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import com.app.newsapp.R
-import com.app.newsapp.dashboard.model.NewsResponse
+import com.app.newsapp.dashboard.model.Article
 import com.app.newsapp.utils.getFormattedDate
 import com.app.others.BaseActivity
 import com.app.others.Constants
@@ -54,8 +54,9 @@ class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract {
     }
 
     override fun newsDetailsFetched() {
-        val newsresponse = GsonBuilder().create().fromJson(_jsonString, NewsResponse.Article::class.java)
+        val newsresponse = GsonBuilder().create().fromJson(_jsonString, Article::class.java)
         news_title.text = newsresponse.title
+       // dasdasda
         tv_source.text = newsresponse.source!!.name
 
         tv_date.text = getFormattedDate(newsresponse.publishedAt!!)

@@ -3,21 +3,32 @@ package com.app.newsapp.dashboard
 import android.content.Context
 import android.util.Log
 import com.app.newsapp.R
+import com.app.newsapp.dashboard.model.Article
 import com.app.newsapp.dashboard.servicecall.DashboardRepositoy
+import com.app.newsapp.db.NewsDataBase
 import com.app.newsapp.utils.showToast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.CompletableObserver
+import io.reactivex.Completable
+
 
 class DashboardPresenter(
     private val context: Context,
     private val view: DashboardContract.View,
-    private val dashboardRepositoy: DashboardRepositoy
+    private val dashboardRepositoy: DashboardRepositoy,
+    private val mdb: NewsDataBase
 ) :
     DashboardContract.Presenter {
 
+
     val TAG = "DashboardPresenter"
     private var disposable: Disposable? = null
+    private var listData: List<Article>? = null
+    private var listNewsData: List<Article>? = null
+
+    val newsdata: Article? = null
 
     init {
         view.setPresenter(this)
@@ -33,40 +44,23 @@ class DashboardPresenter(
 
     override fun callNewsAPI(apiKey: String) {
         if (!view.isNetworkAvailable()) {
+            getDataFromDB()
             view.showNetworkUnavailableMsg()
             return
         }
-
         //show progressdilaog
         view.handleProgressAlert(true)
-
         disposable = dashboardRepositoy.callLoginApi("", "")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                view.handleProgressAlert(false)
-                if (it.getStatus()!! == "ok") {
-                    //showToast(context, "" + it.getArticles()!!.size)
-                    view.newsFetched(it.getArticles()!!)
+                if (it.status!! == "ok") {
+                    view.newsFetched(it.articles!!)
+                    insertIntoDB(it.articles)
+                } else {
+                    view.handleProgressAlert(false)
                 }
 
-                /*if (!it.response.data.isEmpty()) {
-                    Log.d("Json_Stirng", json)
-                    val obj = JSONObject(AESCrypt.decrypt(Base64.decode(it.response.salt, Base64.NO_WRAP), it.response.data))
-                    if (obj.get("responseCode").toString().equals("200")) {
-                        // view.showSomeErrorOccurredMsg(obj.get("responseDetails") as String)
-                        val loginresponsesucess = GsonBuilder().create().fromJson(json, LoginResponseModel::class.java)
-                        Log.d("RawToken", loginresponsesucess.user!!.rememberToken.toString())
-                        Log.v("profile_image_login",loginresponsesucess.user!!.mainimage.toString())
-
-
-                        if (view.isActivityRunning()) {
-                            view.goToNextPage()
-                        }
-                    } else if (obj.get("responseCode").toString().equals("203")) {
-
-                    }
-                }*/
             }, {
                 Log.e(TAG, it.toString())
                 if (view.isActivityRunning()) {
@@ -76,7 +70,51 @@ class DashboardPresenter(
                     else view.showNetworkUnavailableMsg()
                 }
             })
+    }
 
+    override fun getDataFromDB() {
+        view.handleProgressAlert(true)
+        Completable.fromAction {
+            listData = mdb.weatherDataDao().getAllNewsData()
+        }.observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {
+
+                }
+
+                override fun onComplete() {
+                    view.handleProgressAlert(false)
+                    if(listData!!.isNotEmpty()) {
+                        view.newsFetchedDB(listData!!)
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                    //view.handleProgressAlert(false)
+                    e.printStackTrace()
+                }
+            })
+    }
+
+    override fun insertIntoDB(list: List<Article>) {
+        Completable.fromAction {
+            mdb.weatherDataDao().insert(list)
+        }.observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {
+
+                }
+
+                override fun onComplete() {
+                    view.handleProgressAlert(false)
+                    showToast(context, "Successfully Inserted")
+                }
+
+                override fun onError(e: Throwable) {
+                    view.handleProgressAlert(false)
+                    e.printStackTrace()
+                }
+            })
     }
 
 }

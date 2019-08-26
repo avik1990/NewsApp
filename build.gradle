@@ -38,4 +38,5 @@ ext {
     ankoVersion = '0.10.4'
     rxJavaVersion = '2.1.11'
     rxAndroidVersion = '2.0.2'
+    room_version= '1.0.0'
 }

@@ -1,9 +1,6 @@
 package com.app.newsapp.details
 
 import android.support.v7.app.AppCompatActivity
-import com.app.newsapp.dashboard.model.NewsResponse
-import com.app.others.BasePresenter
-import com.app.others.BaseView
 
 interface DetailsContract {
 
