@@ -21,7 +21,6 @@ class NewsAdapter(
     private val newsList: List<Article>,
     private val onNewsSelected: onRowItemSelected,
     private val from: String
-
 ) : RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
 
     lateinit var rowView: View

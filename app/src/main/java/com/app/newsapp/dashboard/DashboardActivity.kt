@@ -9,7 +9,7 @@ import com.app.newsapp.R
 import com.app.newsapp.dashboard.adapter.NewsAdapter
 import com.app.newsapp.dashboard.model.Article
 import com.app.newsapp.dashboard.servicecall.DashboardProvider
-import com.app.newsapp.db.NewsDataBase
+import com.app.newsapp.db.AppDatabse
 import com.app.newsapp.details.DetailsActivity
 import com.app.newsapp.utils.isConnectedToNetwork
 import com.app.newsapp.utils.showSnackbar
@@ -26,7 +26,7 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
     lateinit var newsAdapter: NewsAdapter
     lateinit var listNews: List<Article>
     lateinit var jsonbject: String
-    private var mDb: NewsDataBase? = null
+    private var mDb: AppDatabse? = null
     lateinit var flag: String
 
     private val loader by lazy {
@@ -72,7 +72,7 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
 
     override fun initResources() {
         context = this
-        mDb = NewsDataBase.getInstance(context)
+        mDb = AppDatabse.getInstance(context)
         DashboardPresenter(context, this, DashboardProvider.getNewsRepository(), mDb!!).start()
     }
 

@@ -5,12 +5,11 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import android.arch.persistence.room.Query
 import com.app.newsapp.dashboard.model.Article
-
 /**
  * Created by avik on 25/08/19.
  */
 @Dao
-interface NewsDataDao {
+interface NewsDao {
 
     @Query("SELECT * from tbl_newsData")
     fun getAllNewsData(): List<Article>
@@ -20,4 +19,11 @@ interface NewsDataDao {
 
     @Query("DELETE from tbl_newsData")
     fun deleteAll()
+
+    @Query("Select author from tbl_newsData where _id=:insertedID")
+    fun findById(insertedID: Long?): String
+
+    @Query("DELETE from tbl_newsData where author=:author")
+    fun deleteByAuthor(author: String?)
+
 }

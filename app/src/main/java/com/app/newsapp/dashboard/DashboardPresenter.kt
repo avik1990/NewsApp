@@ -5,7 +5,7 @@ import android.util.Log
 import com.app.newsapp.R
 import com.app.newsapp.dashboard.model.Article
 import com.app.newsapp.dashboard.servicecall.DashboardRepositoy
-import com.app.newsapp.db.NewsDataBase
+import com.app.newsapp.db.AppDatabse
 import com.app.newsapp.utils.showToast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -18,7 +18,7 @@ class DashboardPresenter(
     private val context: Context,
     private val view: DashboardContract.View,
     private val dashboardRepositoy: DashboardRepositoy,
-    private val mdb: NewsDataBase
+    private val mdb: AppDatabse
 ) :
     DashboardContract.Presenter {
 
@@ -75,7 +75,7 @@ class DashboardPresenter(
     override fun getDataFromDB() {
         view.handleProgressAlert(true)
         Completable.fromAction {
-            listData = mdb.weatherDataDao().getAllNewsData()
+            listData = mdb.newsDataDao().getAllNewsData()
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
                 override fun onSubscribe(d: Disposable) {
@@ -98,7 +98,7 @@ class DashboardPresenter(
 
     override fun insertIntoDB(list: List<Article>) {
         Completable.fromAction {
-            mdb.weatherDataDao().insert(list)
+            mdb.newsDataDao().insert(list)
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
                 override fun onSubscribe(d: Disposable) {
