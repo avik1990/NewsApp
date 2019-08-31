@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.onRowItemSelected {
 
+
     lateinit var dashboardPresenter: DashboardPresenter
     lateinit var context: Context
     lateinit var newsAdapter: NewsAdapter
@@ -42,13 +43,21 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
         return this@DashboardActivity
     }
 
-    override fun handleProgressAlert(showingStatus: Boolean) {
+
+    override fun shoDialog() {
+        loader.show()
+    }
+
+    override fun dismissDialog() {
+        loader.hide()
+    }
+    /*override fun handleProgressAlert(showingStatus: Boolean) {
         if (showingStatus) {
             loader.show()
         } else {
             loader.hide()
         }
-    }
+    }*/
 
     override fun isActivityRunning(): Boolean {
         return isActivityVisible
@@ -77,7 +86,7 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
     }
 
     override fun initListeners() {
-        dashboardPresenter.callNewsAPI("")
+        dashboardPresenter.callNewsAPI(Constants.Keys._date, Constants.Keys._publishedAt, Constants.Keys._apiKeys)
     }
 
     override fun getLayout(): Int {

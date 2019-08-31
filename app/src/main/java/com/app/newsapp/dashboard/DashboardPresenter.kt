@@ -14,7 +14,7 @@ import io.reactivex.CompletableObserver
 import io.reactivex.Completable
 
 
-class DashboardPresenter(
+open class DashboardPresenter(
     private val context: Context,
     private val view: DashboardContract.View,
     private val dashboardRepositoy: DashboardRepositoy,
@@ -22,13 +22,10 @@ class DashboardPresenter(
 ) :
     DashboardContract.Presenter {
 
-
     val TAG = "DashboardPresenter"
     private var disposable: Disposable? = null
     private var listData: List<Article>? = null
-    private var listNewsData: List<Article>? = null
 
-    val newsdata: Article? = null
 
     init {
         view.setPresenter(this)
@@ -39,18 +36,18 @@ class DashboardPresenter(
 
     override fun stop() {
         disposable?.dispose()
-        view.handleProgressAlert(false)
+        view.dismissDialog()
     }
 
-    override fun callNewsAPI(apiKey: String) {
+    override fun callNewsAPI(date: String, _publishedAt: String, _apiKeys: String) {
         if (!view.isNetworkAvailable()) {
             getDataFromDB()
             view.showNetworkUnavailableMsg()
             return
         }
         //show progressdilaog
-        view.handleProgressAlert(true)
-        disposable = dashboardRepositoy.callLoginApi("", "")
+        view.shoDialog()
+        disposable = dashboardRepositoy.callLoginApi(date, _publishedAt, _apiKeys)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -58,13 +55,13 @@ class DashboardPresenter(
                     view.newsFetched(it.articles!!)
                     insertIntoDB(it.articles)
                 } else {
-                    view.handleProgressAlert(false)
+                    view.dismissDialog()
                 }
 
             }, {
                 Log.e(TAG, it.toString())
                 if (view.isActivityRunning()) {
-                    view.handleProgressAlert(false)
+                    view.dismissDialog()
                     if (view.isNetworkAvailable())
                         view.showSomeErrorOccurredMsg(view.getContext().getString(R.string.someErrorOccurred))
                     else view.showNetworkUnavailableMsg()
@@ -73,7 +70,7 @@ class DashboardPresenter(
     }
 
     override fun getDataFromDB() {
-        view.handleProgressAlert(true)
+        view.shoDialog()
         Completable.fromAction {
             listData = mdb.newsDataDao().getAllNewsData()
         }.observeOn(AndroidSchedulers.mainThread())
@@ -83,14 +80,13 @@ class DashboardPresenter(
                 }
 
                 override fun onComplete() {
-                    view.handleProgressAlert(false)
-                    if(listData!!.isNotEmpty()) {
+                    view.dismissDialog()
+                    if (listData!!.isNotEmpty()) {
                         view.newsFetchedDB(listData!!)
                     }
                 }
 
                 override fun onError(e: Throwable) {
-                    //view.handleProgressAlert(false)
                     e.printStackTrace()
                 }
             })
@@ -106,12 +102,12 @@ class DashboardPresenter(
                 }
 
                 override fun onComplete() {
-                    view.handleProgressAlert(false)
+                    view.dismissDialog()
                     showToast(context, "Successfully Inserted")
                 }
 
                 override fun onError(e: Throwable) {
-                    view.handleProgressAlert(false)
+                    view.dismissDialog()
                     e.printStackTrace()
                 }
             })

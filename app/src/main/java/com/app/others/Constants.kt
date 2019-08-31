@@ -33,6 +33,9 @@ object Constants {
     object Keys {
         val _jsonString = "jsonString"
         val _isOffline = ""
+        val _apiKeys = "4eb1483620174fba970d74a1cd7e300f"
+        val _publishedAt = "publishedAt"
+        val _date = "2019-08-24"
 
     }
 }

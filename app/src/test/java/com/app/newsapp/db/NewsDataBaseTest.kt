@@ -49,13 +49,12 @@ class NewsDataBaseTest {
             val insertedID = newsDao!!.insert(note) as Long
             assertNotNull(insertedID)
 
-            val inserted = newsDao!!.findById(insertedID) as String
+            val inserted = newsDao!!.findById(insertedID)
             assertNotNull(inserted)
-            assertTrue(inserted == "null")
-
+            assertEquals(inserted,"Avik")
 
             val deletedQtd = newsDao!!.deleteByAuthor(inserted) as Long
-            assertEquals(deletedQtd.toLong(), 1)
+            assertEquals(deletedQtd, 1)
 
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
