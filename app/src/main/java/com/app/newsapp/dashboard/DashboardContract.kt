@@ -20,7 +20,7 @@ interface DashboardContract {
     interface Presenter : BasePresenter {
         fun callNewsAPI(date: String, _publishedAt: String, _apiKeys: String)
         fun getDataFromDB()
-        fun insertIntoDB(list: List<Article>)
+        fun callDb()
     }
 
 }

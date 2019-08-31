@@ -27,7 +27,6 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
     lateinit var newsAdapter: NewsAdapter
     lateinit var listNews: List<Article>
     lateinit var jsonbject: String
-    private var mDb: AppDatabse? = null
     lateinit var flag: String
 
     private val loader by lazy {
@@ -51,13 +50,6 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
     override fun dismissDialog() {
         loader.hide()
     }
-    /*override fun handleProgressAlert(showingStatus: Boolean) {
-        if (showingStatus) {
-            loader.show()
-        } else {
-            loader.hide()
-        }
-    }*/
 
     override fun isActivityRunning(): Boolean {
         return isActivityVisible
@@ -81,8 +73,7 @@ class DashboardActivity : BaseActivity(), DashboardContract.View, NewsAdapter.on
 
     override fun initResources() {
         context = this
-        mDb = AppDatabse.getInstance(context)
-        DashboardPresenter(context, this, DashboardProvider.getNewsRepository(), mDb!!).start()
+        DashboardPresenter(context, this, DashboardProvider.getNewsRepository(context)).start()
     }
 
     override fun initListeners() {

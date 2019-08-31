@@ -6,5 +6,6 @@
 
     <string name="robotoSlab_bold">font/RobotoSlab_Bold.ttf</string>
     <string name="robotoSlab_regular">font/RobotoSlab_Regular.ttf</string>
+    <string name="error_msg">Please Try Again Later</string>
 
 </resources>

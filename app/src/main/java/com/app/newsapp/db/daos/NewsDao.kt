@@ -26,4 +26,7 @@ interface NewsDao {
     @Query("DELETE from tbl_newsData where author=:author")
     fun deleteByAuthor(author: String?)
 
+    @Query("DELETE from tbl_newsData")
+    fun deleteData()
+
 }

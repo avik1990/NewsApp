@@ -17,8 +17,7 @@ import io.reactivex.Completable
 open class DashboardPresenter(
     private val context: Context,
     private val view: DashboardContract.View,
-    private val dashboardRepositoy: DashboardRepositoy,
-    private val mdb: AppDatabse
+    private val dashboardRepositoy: DashboardRepositoy
 ) :
     DashboardContract.Presenter {
 
@@ -53,8 +52,11 @@ open class DashboardPresenter(
             .subscribe({
                 if (it.status!! == "ok") {
                     view.newsFetched(it.articles!!)
-                    insertIntoDB(it.articles)
+                    dashboardRepositoy.insertDataRepo(it.articles)
+                    view.dismissDialog()
                 } else {
+                    view.showSomeErrorOccurredMsg(context.getString(R.string.error_msg))
+
                     view.dismissDialog()
                 }
 
@@ -72,7 +74,7 @@ open class DashboardPresenter(
     override fun getDataFromDB() {
         view.shoDialog()
         Completable.fromAction {
-            listData = mdb.newsDataDao().getAllNewsData()
+            listData = dashboardRepositoy.getDataRepo()
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
                 override fun onSubscribe(d: Disposable) {
@@ -92,25 +94,30 @@ open class DashboardPresenter(
             })
     }
 
-    override fun insertIntoDB(list: List<Article>) {
-        Completable.fromAction {
-            mdb.newsDataDao().insert(list)
-        }.observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
-                override fun onSubscribe(d: Disposable) {
+    /* override fun insertIntoDB(list: List<Article>) {
+         Completable.fromAction {
+             mdb.newsDataDao().insert(list)
+         }.observeOn(AndroidSchedulers.mainThread())
+             .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
+                 override fun onSubscribe(d: Disposable) {
 
-                }
+                 }
 
-                override fun onComplete() {
-                    view.dismissDialog()
-                    showToast(context, "Successfully Inserted")
-                }
+                 override fun onComplete() {
+                     view.dismissDialog()
+                     showToast(context, "Successfully Inserted")
+                 }
 
-                override fun onError(e: Throwable) {
-                    view.dismissDialog()
-                    e.printStackTrace()
-                }
-            })
+                 override fun onError(e: Throwable) {
+                     view.dismissDialog()
+                     e.printStackTrace()
+                 }
+             })
+     }*/
+
+    override fun callDb() {
+
+
     }
 
 }
