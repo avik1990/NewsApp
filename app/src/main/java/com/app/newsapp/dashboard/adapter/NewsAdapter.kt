@@ -19,14 +19,13 @@ import com.squareup.picasso.Picasso
 class NewsAdapter(
     private val context: Context,
     private val newsList: List<Article>,
-    private val onNewsSelected: onRowItemSelected,
-    private val from: String
+    private val onNewsSelected: onRowItemSelected
 ) : RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
 
     lateinit var rowView: View
 
     interface onRowItemSelected {
-        fun getPosition(pos: Int)
+        fun getPosition(pos: Int,imageView: ImageView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -52,7 +51,7 @@ class NewsAdapter(
         holder.tv_date.text = getFormattedDate(newsList[position].publishedAt!!)
 
         holder.card_view.setOnClickListener {
-            onNewsSelected.getPosition(position)
+            onNewsSelected.getPosition(position,holder.imgvwBankIcon)
         }
 
     }

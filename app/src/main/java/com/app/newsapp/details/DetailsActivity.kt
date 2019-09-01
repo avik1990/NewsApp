@@ -24,7 +24,6 @@ class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract, V
 
     lateinit var context: Context
     lateinit var _jsonString: String
-    lateinit var _isOffline: String
 
     private val loader by lazy {
         LoaderDialog(this)
@@ -47,7 +46,6 @@ class DetailsActivity : BaseActivity(), DetailsContract.View, DetailsContract, V
     override fun initResources() {
         context = this
         _jsonString = intent.getStringExtra(Constants.Keys._jsonString)
-        _isOffline = intent.getStringExtra(Constants.Keys._isOffline)//flag =1 online flag=2 offline
         newsDetailsFetched()
     }
 

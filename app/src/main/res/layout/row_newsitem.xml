@@ -17,12 +17,14 @@
         <FrameLayout android:layout_width="match_parent"
                      android:layout_height="wrap_content">
 
-            <ImageView android:layout_width="wrap_content"
-                       android:id="@+id/iv_img"
-                       android:layout_gravity="center"
-                       android:scaleType="centerCrop"
-                       android:src="@drawable/ic_demo_image"
-                       android:layout_height="@dimen/_200sdp"/>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/iv_img"
+                    android:layout_gravity="center"
+                    android:transitionName="imageMain"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_demo_image"
+                    android:layout_height="@dimen/_200sdp"/>
 
             <LinearLayout android:layout_width="match_parent"
                           android:orientation="vertical"
