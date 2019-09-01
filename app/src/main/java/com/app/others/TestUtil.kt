@@ -14,5 +14,15 @@ object TestUtil {
         )
     }
 
+    fun createNote1(): List<Article> {
+
+        return listOf(
+            Article(
+                null, "AuthorTest", "Title", "Description",
+                "URL", "URLTOIMAGE", "12", "content", null
+            )
+        )
+    }
+
 
 }

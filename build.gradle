@@ -39,4 +39,5 @@ ext {
     rxJavaVersion = '2.1.11'
     rxAndroidVersion = '2.0.2'
     room_version= '1.0.0'
+    mockito_version= '2.8.9'
 }

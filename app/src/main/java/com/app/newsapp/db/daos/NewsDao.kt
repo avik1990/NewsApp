@@ -18,15 +18,6 @@ interface NewsDao {
     fun insert(newsData: List<Article>)
 
     @Query("DELETE from tbl_newsData")
-    fun deleteAll()
-
-    @Query("Select author from tbl_newsData where _id=:insertedID")
-    fun findById(insertedID: Long): String
-
-    @Query("DELETE from tbl_newsData where author=:author")
-    fun deleteByAuthor(author: String?)
-
-    @Query("DELETE from tbl_newsData")
     fun deleteData()
 
 }

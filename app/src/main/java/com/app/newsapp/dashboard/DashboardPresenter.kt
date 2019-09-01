@@ -5,14 +5,11 @@ import android.util.Log
 import com.app.newsapp.R
 import com.app.newsapp.dashboard.model.Article
 import com.app.newsapp.dashboard.servicecall.DashboardRepositoy
-import com.app.newsapp.db.AppDatabse
-import com.app.newsapp.utils.showToast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.CompletableObserver
 import io.reactivex.Completable
-
 
 open class DashboardPresenter(
     private val context: Context,

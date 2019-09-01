@@ -1,67 +1,60 @@
 package com.app.newsapp.dashboard
 
 import android.content.Context
-import com.app.newsapp.dashboard.model.Article
-import com.app.newsapp.dashboard.model.NewsResponse
-import com.app.newsapp.dashboard.servicecall.DashboardRepositoy
+import com.app.newsapp.dashboard.servicecall.DashboardProvider
 import com.app.newsapp.db.AppDatabse
-import com.app.newsapp.db.NewsDao
-import com.app.newsapp.utils.showToast
-import com.app.others.APIService
 import com.app.others.Constants
-import junit.framework.Assert
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
-import java.io.IOException
-import java.util.*
 
-@RunWith(MockitoJUnitRunner::class)
 class DashboardPresenterTest {
 
-    @Mock
-    private var context: Context? = null
+    lateinit var dashboardPresenter: DashboardPresenter
 
     @Mock
-    private var view: DashboardContract.View? = null
-
+    lateinit var newsDataBaseMock: AppDatabse
     @Mock
-    private var apiService: APIService? = null
-
+    lateinit var contextMock: Context
     @Mock
-    private var dashboardRepositoy: DashboardRepositoy? = null
-
-    private var dashboardPresenter: DashboardPresenter? = null
-
-    @Mock
-    private var mdb: AppDatabse? = null
+    lateinit var dashboardViewMock : DashboardContract.View
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-        dashboardPresenter = DashboardPresenter(context!!, view!!, dashboardRepositoy!!, mdb!!)
+        dashboardViewMock = Mockito.mock(DashboardContract.View::class.java)
+        contextMock = Mockito.mock(Context::class.java)
+        newsDataBaseMock = Mockito.mock(AppDatabse::class.java)
+        dashboardPresenter = DashboardPresenter(contextMock, dashboardViewMock, DashboardProvider.getNewsRepository(contextMock))
     }
 
     @Test
-    fun testapiCall() {
-        Mockito.`when`(view!!.isNetworkAvailable()).thenReturn(true)
-        dashboardPresenter!!.callNewsAPI(Constants.Keys._date, Constants.Keys._publishedAt, Constants.Keys._apiKeys)
-        Mockito.verify(view, Mockito.times(0))!!.showNetworkUnavailableMsg()
+    fun testNetworkCheckSuccess(){
+        Mockito.`when`(dashboardViewMock.isNetworkAvailable()).thenReturn(false)
+        dashboardPresenter.callNewsAPI(Constants.Keys._date, Constants.Keys._publishedAt, Constants.Keys._apiKeys)
+        Mockito.verify(dashboardViewMock, Mockito.times(1)).showNetworkUnavailableMsg()
     }
 
-    /* @Test
-     fun testNetworkCheck(){
-         Mockito.`when`(view!!.isNetworkAvailable()).thenReturn(true)
-         dashboardPresenter!!.callNewsAPI(Constants.Keys._date, Constants.Keys._publishedAt, Constants.Keys._apiKeys)
-         Mockito.verify(view, Mockito.times(0))!!.showNetworkUnavailableMsg()
-     }*/
+    @Test
+    fun testNetworkCheck(){
+        Mockito.`when`(dashboardViewMock.isNetworkAvailable()).thenReturn(true)
+        dashboardPresenter.callNewsAPI(Constants.Keys._date, Constants.Keys._publishedAt, Constants.Keys._apiKeys)
+        Mockito.verify(dashboardViewMock, Mockito.times(0)).showNetworkUnavailableMsg()
+    }
+
+    @Test
+    fun testAPICall(){
+        Mockito.`when`(dashboardViewMock.isNetworkAvailable()).thenReturn(true)
+        dashboardPresenter.callNewsAPI(Constants.Keys._date, Constants.Keys._publishedAt, Constants.Keys._apiKeys)
+        Mockito.verify(dashboardViewMock, Mockito.times(0)).showNetworkUnavailableMsg()
+    }
+
+
+    /*@Test
+    fun testDataBaseCheck(){
+        Mockito.`when`(dashboardViewMock.isNetworkAvailable()).thenReturn(false)
+        dashboardPresenter.getDataFromDB()
+        Mockito.verify(dashboardViewMock, Mockito.times(0)).showNetworkUnavailableMsg()
+    }*/
 
 }
