@@ -1,9 +1,8 @@
 package com.app.newsapp.dashboard
 
 import android.content.Context
-import android.util.Log
-import com.app.newsapp.R
 import com.app.newsapp.dashboard.model.Article
+import com.app.newsapp.dashboard.model.NewsResponse
 import com.app.newsapp.dashboard.servicecall.DashboardRepositoy
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -19,7 +18,6 @@ open class DashboardPresenter(
     DashboardContract.Presenter {
 
     val TAG = "DashboardPresenter"
-    private var disposable: Disposable? = null
     private var listData: List<Article>? = null
 
 
@@ -31,7 +29,6 @@ open class DashboardPresenter(
     }
 
     override fun stop() {
-        disposable?.dispose()
         view.dismissDialog()
     }
 
@@ -41,31 +38,23 @@ open class DashboardPresenter(
             view.showNetworkUnavailableMsg()
             return
         }
-        //show progressdilaog
         view.shoDialog()
-        disposable = dashboardRepositoy.callLoginApi(date, _publishedAt, _apiKeys)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                if (it.status!! == "ok") {
-                    view.newsFetched(it.articles!!)
-                    dashboardRepositoy.insertDataRepo(it.articles)
+        dashboardRepositoy.callNewsApi(date, _publishedAt, _apiKeys,
+            object : DataSourceCallBack<NewsResponse> {
+                override fun onSuccess(responseData: NewsResponse) {
+                    view.newsFetched(responseData.articles!!)
+                    dashboardRepositoy.insertDataRepo(responseData.articles)
                     view.dismissDialog()
-                } else {
-                    view.showSomeErrorOccurredMsg(context.getString(R.string.error_msg))
+                }
+
+                override fun onError(errorMsg: String) {
+                    view.showSomeErrorOccurredMsg(errorMsg)
 
                     view.dismissDialog()
                 }
 
-            }, {
-                Log.e(TAG, it.toString())
-                if (view.isActivityRunning()) {
-                    view.dismissDialog()
-                    if (view.isNetworkAvailable())
-                        view.showSomeErrorOccurredMsg(view.getContext().getString(R.string.someErrorOccurred))
-                    else view.showNetworkUnavailableMsg()
-                }
             })
+
     }
 
     override fun getDataFromDB() {
@@ -89,32 +78,6 @@ open class DashboardPresenter(
                     e.printStackTrace()
                 }
             })
-    }
-
-    /* override fun insertIntoDB(list: List<Article>) {
-         Completable.fromAction {
-             mdb.newsDataDao().insert(list)
-         }.observeOn(AndroidSchedulers.mainThread())
-             .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
-                 override fun onSubscribe(d: Disposable) {
-
-                 }
-
-                 override fun onComplete() {
-                     view.dismissDialog()
-                     showToast(context, "Successfully Inserted")
-                 }
-
-                 override fun onError(e: Throwable) {
-                     view.dismissDialog()
-                     e.printStackTrace()
-                 }
-             })
-     }*/
-
-    override fun callDb() {
-
-
     }
 
 }

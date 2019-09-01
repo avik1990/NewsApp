@@ -1,6 +1,7 @@
 package com.app.newsapp.dashboard.servicecall
 
 import android.content.Context
+import com.app.newsapp.dashboard.DataSourceCallBack
 import com.app.newsapp.dashboard.model.Article
 import com.app.newsapp.dashboard.model.NewsResponse
 import com.app.newsapp.db.AppDatabse
@@ -19,8 +20,20 @@ open class DashboardRepositoy(private val apiService: APIService, private val co
     private var mWordDao: NewsDao? = null
     private var listData: List<Article>? = null
 
-    fun callLoginApi(date: String, _publishedAt: String, _apiKeys: String): Observable<NewsResponse> {
-        return apiService.getNewsResponse(date, _publishedAt, _apiKeys)
+    fun callNewsApi(date: String, _publishedAt: String, _apiKeys: String, listener: DataSourceCallBack<NewsResponse>) {
+        apiService.getNewsResponse(date, _publishedAt, _apiKeys)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (it.status!! == "ok") {
+                    listener.onSuccess(it)
+                } else {
+                    listener.onError("Please Try Again Later")
+                }
+
+            }, {
+                listener.onError("Something went wrong")
+            })
     }
 
 
