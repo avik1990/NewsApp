@@ -6,6 +6,8 @@
 5.Mokito
 6.RxJava
 
+
+
 @Entity(tableName = "tbl_newsData")
 data class Article(
     @PrimaryKey(autoGenerate = true) var _id: Long?,
